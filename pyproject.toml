@@ -38,6 +38,11 @@ dev = [
 bedrock = [
     "langchain-aws>=1.5.0",
 ]
+# TypeSafe Jev / System One decision backend. Optional so a core install
+# stays lean: pip install "tradingagents[jev]".
+jev = [
+    "typesafe-sdk",
+]
 
 [project.scripts]
 tradingagents = "cli.main:app"

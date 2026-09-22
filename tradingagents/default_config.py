@@ -26,6 +26,10 @@ _ENV_OVERRIDES = {
     "TRADINGAGENTS_GOOGLE_THINKING_LEVEL":   "google_thinking_level",
     "TRADINGAGENTS_OPENAI_REASONING_EFFORT": "openai_reasoning_effort",
     "TRADINGAGENTS_ANTHROPIC_EFFORT":        "anthropic_effort",
+    # Jev / System One (not an LLM provider; see tradingagents.decision_models)
+    "TRADINGAGENTS_JEV_MODEL":               "jev_model",
+    "TRADINGAGENTS_JEV_TIMEOUT":             "jev_timeout",
+    "TRADINGAGENTS_JEV_BASE_URL":            "jev_base_url",
 }
 
 
@@ -106,6 +110,12 @@ DEFAULT_CONFIG = _apply_env_overrides({
     # unbounded reasoning/output and hangs or trips a gateway idle timeout
     # (e.g. some deepseek-v4-flash deployments, #1204).
     "max_tokens": None,
+    # TypeSafe Jev (System One) — a decision backend, not an llm_provider.
+    # quick/deep LLMs stay independent so System 1 (Jev) and System 2 (LLM)
+    # can run together. Default model/timeout match typesafe-sdk constants.
+    "jev_model": "jev-latest",
+    "jev_timeout": 10.0,
+    "jev_base_url": None,
     # Checkpoint/resume: when True, LangGraph saves state after each node
     # so a crashed run can resume from the last successful step.
     "checkpoint_enabled": False,

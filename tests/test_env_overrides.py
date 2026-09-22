@@ -127,3 +127,18 @@ def test_unknown_env_var_is_ignored(monkeypatch):
         TRADINGAGENTS_NONEXISTENT_KEY="oops",
     )
     assert "nonexistent_key" not in dc.DEFAULT_CONFIG
+
+
+def test_jev_overrides_do_not_change_llm_provider(monkeypatch):
+    """Jev is a separate backend; TRADINGAGENTS_JEV_* must not set llm_provider."""
+    dc = _reload_with_env(
+        monkeypatch,
+        TRADINGAGENTS_JEV_MODEL="jev-1.13.0",
+        TRADINGAGENTS_JEV_TIMEOUT="15.5",
+        TRADINGAGENTS_JEV_BASE_URL="https://api.example.invalid",
+    )
+    assert dc.DEFAULT_CONFIG["llm_provider"] == "openai"
+    assert dc.DEFAULT_CONFIG["jev_model"] == "jev-1.13.0"
+    assert dc.DEFAULT_CONFIG["jev_timeout"] == 15.5
+    assert dc.DEFAULT_CONFIG["jev_base_url"] == "https://api.example.invalid"
+    _reload_with_env(monkeypatch)
